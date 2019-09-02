@@ -1,0 +1,73 @@
+
+<pre class="language-html line-numbers">
+    <code>
+   
+        ### Plugin datetimePicker (Bootstrap 3)
+    
+        https://eonasdan.github.io/bootstrap-datetimepicker/
+            ## Requirimientos 
+                jQuery: https://cdnjs.com/libraries/jquery/
+                Moment.js &amp;&amp; Locales: Moment's locale files: https://momentjs.com/
+                Bootstrap CSS, Bootstrap.js (transition and collapse are required if you're not using the full Bootstrap) v3+: https://getbootstrap.com/docs/3.3/
+                Bootstrap Datepicker script: https://bootstrap-datepicker.readthedocs.io/en/latest/
+                
+                Bootstrap Datepicker CSS JS: https://eonasdan.github.io/bootstrap-datetimepicker/Installing/#installation-guides
+            
+            ## Como debe quedar
+            
+                &lt;link rel=&quot;stylesheet&quot; href=&quot;/path/to/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css&quot; /&gt;
+                
+                &lt;script type=&quot;text/javascript&quot; src=&quot;/path/to/jquery.js&quot;&gt;&lt;/script&gt;
+                &lt;script type=&quot;text/javascript&quot; src=&quot;/path/to/moment.js&quot;&gt;&lt;/script&gt;
+                &lt;script type=&quot;text/javascript&quot; src=&quot;/path/to/bootstrap/js/transition.js&quot;&gt;&lt;/script&gt;
+                &lt;script type=&quot;text/javascript&quot; src=&quot;/path/to/bootstrap/js/collapse.js&quot;&gt;&lt;/script&gt;
+                &lt;script type=&quot;text/javascript&quot; src=&quot;/path/to/bootstrap/dist/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+                &lt;script type=&quot;text/javascript&quot; src=&quot;/path/to/bootstrap-datetimepicker.min.js&quot;&gt;&lt;/script&gt;
+                
+            ## Usage
+            
+                # 1: Input con boton de calendario y localizacion: es
+                &lt;div class=&quot;container&quot;&gt;
+                    &lt;div class=&quot;row&quot;&gt;
+                        &lt;div class='col-sm-6'&gt;
+                            &lt;div class=&quot;form-group&quot;&gt;
+                                &lt;div class='input-group date' id='datetimepicker2'&gt;
+                                    &lt;input type='text' class=&quot;form-control&quot; /&gt;
+                                    &lt;span class=&quot;input-group-addon&quot;&gt;
+                                        &lt;span class=&quot;glyphicon glyphicon-calendar&quot;&gt;&lt;/span&gt;
+                                    &lt;/span&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;script type=&quot;text/javascript&quot;&gt;
+                            $(function () {
+                                $('#datetimepicker2').datetimepicker({
+                                    locale: 'ru'
+                                });
+                            });
+                        &lt;/script&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                
+                # 2 Sin iconos
+                    &lt;div class=&quot;container&quot;&gt;
+                    &lt;div class=&quot;row&quot;&gt;
+                        &lt;div class='col-sm-6'&gt;
+                            &lt;input type='text' class=&quot;form-control&quot; id='datetimepicker4' /&gt;
+                        &lt;/div&gt;
+                        &lt;script type=&quot;text/javascript&quot;&gt;
+                            $(function () {
+                                $('#datetimepicker4').datetimepicker();
+                            });
+                        &lt;/script&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            
+            
+            ## TIP: para guardar en la base de datos, en caso de que cambie el formato (php - sql): https://tecadmin.net/convert-date-format-in-php/
+     
+    </code>
+</pre>
+
+
+

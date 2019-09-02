@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./prism/prism.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container-fluid" style="margin-top: 15px;">
+        <div class="row">
+          
+            <div class="col-sm-2 col-md-2">
+                <div class="panel-group" id="accordion" class="collapse" style="position:fixed">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <a href="#" id="home"> Inicio</a>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-folder-close">
+                                </span> CakePHP </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
+                            <div class="panel-body">
+                                <table class="table" >
+                                  <tbody id="table_snippets_cakephp"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-folder-close">
+                                </span> Plugins CakePHP </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table">
+                                    <tbody id="table_snippets_cakephp_plugins">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-folder-close">
+                                </span> JS </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table">
+                                  <tbody id="table_snippets_js"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-folder-close">
+                                </span> Plugins Js </a>
+                            </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table class="table">
+                                  <tbody id="table_snippets_js_plugins"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-sm-10 col-md-10">
+                <div class="" id="content" style="width: 100%; height: 100%;">
+                    <h1> Snippets wiki: Cakephp y Js </h1>
+                    <p>Ejemplos practicos para una mejor productividad</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+  <script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script src="./prism/prism.js"></script>
+
+    <script type="module">
+      //collections snippets
+      import { 
+        array_snippets_cakephp, 
+        array_snippets_cakephp_plugins, 
+        array_snippets_js,
+        array_snippets_js_plugins 
+      } from './scripts/collections_snippets.js';
+
+      const table_snippets_cakephp = document.getElementById('table_snippets_cakephp');
+      const table_snippets_cakephp_plugins = document.getElementById('table_snippets_cakephp_plugins');
+      const table_snippets_js= document.getElementById('table_snippets_js');
+      const table_snippets_js_plugins = document.getElementById('table_snippets_js_plugins');
+
+      addItem(table_snippets_cakephp, array_snippets_cakephp);
+      addItem(table_snippets_cakephp_plugins, array_snippets_cakephp_plugins);
+      addItem(table_snippets_js, array_snippets_js);
+      addItem(table_snippets_js_plugins, array_snippets_js_plugins);
+      
+
+      function addItem(elementTable, array_snippets){
+        if(!elementTable || array_snippets.length === 0){
+           throw 'Ha ocurrido un error';
+        }
+        for (let i = 0, n = array_snippets.length; i < n; i++) {
+          const element = array_snippets[i];
+          const { dir, name } = element;
+          
+          elementTable.innerHTML += `
+          <tr>
+            <td>
+                <span class="glyphicon glyphicon-file"></span><a href="#" onclick="load_snippet(event, '${ dir }', '${ name }')">${ name }</a>
+            </td>
+          </tr>
+          `;
+        }
+      }
+    </script>
+
+    <script>
+        const content = document.getElementById("content");
+        //load content
+        function load_snippet(e, dir = null, name = null) {
+            (e || window.event).preventDefault();
+            
+            console.log("TCL: functionload_snippet -> type", dir, name);
+            fetch(`./snippets/${ dir }/${ name }.html` /*, options */)
+              .then(response => response.text())
+              .then(html => {
+                  content.innerHTML = html;
+                  Prism.highlightAll(); //rescanner DOM
+              })
+              .catch((error) => {
+                  console.warn(error);
+              });
+        } 
+
+        //home
+        const home = document.getElementById('home');
+        home.addEventListener('click', function(){
+          content.innerHTML = `
+            <h1> Snippets wiki: Cakephp y Js </h1>
+            <p>Ejemplos practicos para una mejor productividad</p>
+          `;
+        });
+        </script>
+</body>
+</html>

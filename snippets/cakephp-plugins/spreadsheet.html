@@ -1,0 +1,148 @@
+<pre class="language-php line-numbers">
+    <code>
+    &lt;?php 
+        
+    ### Reportes excel con la libreria: PHPSpreadSheet(sucesor de PHPExcel) en CAKEPHP 2.X
+         
+    ### Instalacion de la libreria: PHPSpreadSheet
+       1. Descargar desde su repositorio: https://github.com/PHPOffice/PhpSpreadsheet/releases , 
+       tambien descargar la libreria: simple-cache, ya que lo tiene como dependencia: https://github.com/php-fig/simple-cache
+       - Dentro de: App/vendor crear dos carpetas: PhpOffice y Psr(dentro de esta otra carpeta llamada: Simple-cache);
+       - descomprimir la liberia: PHPSpreadSheet, buscar y copiar todo el contenido (PhpSpreadsheet dir y bootstrapt file) de la carpeta 'src'
+           (ej: PhpSpreadsheet-1.7.0\src), luego pegarlo en: app/vendor/phpOffice/
+       - descomprimir la liberia: Simple-cache, buscar y copiar todo el contenido (CacheException, CacheInterface, InvalidArgumentException) de la carpeta 'src' 
+           (ej: simple-cache-1.0.1\src), luego pegarlo en: app/vendor/Psr/SimpleCache
+           
+    ### Configuracion en el framework cakephp 2.x
+   
+       - Abrir el archivo bootstrap de la app: App/Config/bootstrap.php y pegar el siguiente codigo:
+           /**
+           * Configure the autoloader
+           */
+       spl_autoload_register( function($class) {
+           foreach(App::path('Vendor') as $base) {
+               $path = $base . str_replace('\\', DS, $class) . '.php';
+               if (file_exists($path)) 
+                   return include $path;            
+           }
+       }, true);
+       
+    #### Ejemplo de uso ***
+    ## Dentro del controlador a aplicar:
+       
+       use PhpOffice\PhpSpreadsheet\Spreadsheet;
+       use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+       use PhpOffice\PhpSpreadsheet\IOFactory;
+       
+       ....
+       
+    public function(){
+       
+           /*consultas.......
+           */..................
+           
+           $documento = new Spreadsheet();
+           //Propiedades del documento
+               $documento
+                   ->getProperties()
+                   ->setCreator("Tester")
+                   ->setLastModifiedBy('Tester') // última vez modificado por
+                   ->setTitle('Reporte test - Title')
+                   ->setSubject('Reporte')
+                   ->setDescription('Reporte Prueba')
+                   ->setKeywords('Reporte test')
+                   ->setCategory('Testing');
+                                       
+                   $hoja = $documento->getActiveSheet();
+                   $hoja->setTitle("Reporte Test"); 
+   
+           /* Imagen logo */
+                   $maxWidth = 90;
+                   $maxHeight = 55;
+                   $hoja->mergeCells('A1:A3'); //Inicio Logo  
+                   $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                   $drawing->setName('Logo');
+                   $drawing->setDescription('Eltester');
+                   $drawing->setPath(WWW_ROOT . 'img' . DS . 'logo.png');
+                   $drawing->setCoordinates('A1');
+                   $drawing->setHeight($maxHeight);
+                   // Centrar imagen
+                   $offsetX = $maxWidth - $drawing->getWidth();
+                   $drawing->setOffsetX($offsetX);
+                   $drawing->setWorksheet($hoja);
+   
+                   // Ahora el nombre del sistema (titulo)
+                   $hoja->mergeCells('B1:F3');
+                   $hoja->setCellValue('B1', 'titulo del logo o eslogan');
+                   //estilos para el titulo
+                   $styleArray = [
+                       'font' => [
+                       'size' => 36
+                   ],
+                   'alignment' => [
+                       'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT
+                   ]
+                   ];
+                   $hoja->getStyle('B1:D3')->applyFromArray($styleArray);
+                   // Color de fondo para el logo y titulo
+                   $hoja->getStyle("A1:F3")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFFF');                     
+   
+   
+           // Dimension de celdas
+           $hoja->getColumnDimension('A')->setWidth(15);
+           $hoja->getColumnDimension('B')->setWidth(20);
+           $hoja->getColumnDimension('C')->setWidth(40);
+           
+           // Encabezado de los registros
+           $hoja->setCellValue('A4', 'Titulo 1' ); 
+           $hoja->setCellValue('B4', 'Titulo 2' ); 
+           $hoja->setCellValue('C4', 'Titulo 3' );
+           
+           // Color de fondo para el encabezado de los registros
+           $from = "A4";
+           $to = "C4"; 
+           $hoja->getStyle("$from:$to")->getFont()->setBold(true);
+           $hoja->getStyle("$from:$to")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('e5e6eb');
+           
+           // Contenido o registros(se podria usar algun foreach para hacerlo mas dinamico)
+           $hoja->setCellValue('A5', 'Contenido 1' ); 
+           $hoja->setCellValue('B5', 'Contenido 2' ); 
+           $hoja->setCellValue('C5', 'Contenido 3' );
+           
+           /* example foreach
+           //Contenido
+               $i = 5;
+               foreach ($data as $value) {
+                   $hoja->setCellValue('A'.$i, $value['registros']['Dia']);
+                   $hoja->setCellValue('B'.$i, utf8_encode($value['registros']['Codigo']));
+                   $hoja->setCellValue('C'.$i, $value[0]['Campo']);
+                   $hoja->setCellValue('D'.$i, utf8_encode($value['empleados']['Nombre']));
+                   $hoja->setCellValue('E'.$i, utf8_encode($value[0]['Estado']));
+                   $hoja->setCellValue('F'.$i, utf8_encode($value[0]['Tarea']));
+                   $hoja->setCellValue('G'.$i, utf8_encode($value['centro_costos']['CentroCosto']));
+   
+                   $i++;
+               } 
+           
+           */
+           
+        $nombreDelDocumento = "Reporte_Test.xlsx";
+           
+           /**
+                   * Los siguientes encabezados son necesarios para que
+                   * el navegador entienda que no le estamos mandando simple HTML
+               */
+               header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+               header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
+               header('Cache-Control: max-age=0');
+                                       
+               $writer = IOFactory::createWriter($documento, 'Xlsx');
+               $writer->save('php://output');
+               exit;
+   
+       }
+         
+         
+       ?&gt;
+    </code>
+</pre>

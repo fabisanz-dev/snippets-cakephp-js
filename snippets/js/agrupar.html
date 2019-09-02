@@ -1,0 +1,49 @@
+
+      <pre class="lang-js line-numbers">
+      <code>
+        var myArray = [
+            {group: "one", color: "red"},
+            {group: "two", color: "blue"},
+            {group: "one", color: "green"},
+            {group: "one", color: "black"}
+        ];
+
+        var group_to_values = myArray.reduce(function (obj, item) {
+            obj[item.group] = obj[item.group] || [];
+            obj[item.group].push(item.color);
+            return obj;
+        }, {});
+
+        var groups = Object.keys(group_to_values).map(function (key) {
+            return {group: key, color: group_to_values[key]};
+        });
+
+        var pre = document.createElement("pre");
+        pre.innerHTML = "groups:\n\n" + JSON.stringify(groups, null, 4);
+        document.body.appendChild(pre);
+
+        /*
+        output
+
+        groups:
+
+        [
+            {
+                "group": "one",
+                "color": [
+                    "red",
+                    "green",
+                    "black"
+                ]
+            },
+            {
+                "group": "two",
+                "color": [
+                    "blue"
+                ]
+            }
+        ]
+
+        */
+      </code>
+    </pre>

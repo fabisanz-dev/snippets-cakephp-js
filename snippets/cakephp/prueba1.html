@@ -1,0 +1,51 @@
+<pre class="language-php line-numbers">
+    <code>
+        &lt;?php 
+
+        // Uso del componente: RequestHandler, para devolver respuesta json
+
+        // Previo:
+
+        class AppController extends Controller {
+            ...
+            public function initialize() {
+                parent::initialize();
+                
+                $this->loadComponent('RequestHandler');
+            }
+
+        }
+
+
+        // ejemplo 
+        namespace App\Controller;
+        use App\Controller\AppController;
+
+
+        class MyController extends AppController {
+        
+            public function initialize() {
+                parent::initialize();
+        
+                $this->loadModel('MyModel');
+
+                // $this->loadComponent('RequestHandler'); -> podria cargarse aca si es individual
+            }
+      
+        
+            public function testingExample(){
+                    $res = ['data' => 'lorem impsum'];
+
+                    $data = ['result' => $res];
+                    $this->set([
+                        'response' => $data,
+                        '_serialize' => 'response',
+                    ]);
+                    $this->RequestHandler->renderAs($this, 'json');
+            }
+        }
+        
+
+        ?&gt;
+    </code>
+</pre>
